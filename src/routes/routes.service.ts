@@ -1,0 +1,27 @@
+import { Injectable } from '@nestjs/common';
+import { CreateRouteDto } from './dto/create-route.dto';
+import { PrismaService } from 'src/prisma/prisma/prisma.service';
+
+
+@Injectable()
+export class RoutesService {
+
+  constructor(
+    private prismaService: PrismaService,
+  ) { }
+
+  async create(createRouteDto: CreateRouteDto) {
+    const route = await this.prismaService.route.create({
+      data: {
+        name: createRouteDto.name,
+        destination: createRouteDto.destination,
+        source: createRouteDto.source
+      }
+    })
+    return route;
+  }
+
+  async findAll() {
+    return await this.prismaService.route.findMany();
+  }
+}
